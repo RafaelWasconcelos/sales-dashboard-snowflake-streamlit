@@ -37,7 +37,6 @@ ORDER BY
 LIMIT 5;
 
 -- Query 3: YOY revenue growth by product category
--- Query 3: YOY revenue growth by product category (CORRIGIDA)
 WITH yearly_category_revenue AS (
     SELECT
         p.category,
@@ -58,7 +57,6 @@ SELECT
     year,
     yearly_revenue,
     LAG(yearly_revenue, 1, 0) OVER (PARTITION BY category ORDER BY year) AS previous_year_revenue,
-    -- A CORREÇÃO ESTÁ AQUI:
     (yearly_revenue - previous_year_revenue) / NULLIF(previous_year_revenue, 0) AS yoy_growth_rate
 FROM
     yearly_category_revenue
@@ -67,11 +65,10 @@ ORDER BY
     year;
 
 -- Query 4: Percentage of revenue contributed by top 10 products
-WITH product_revenue AS (
+WITH product_revenue_ranked AS (
     SELECT
-        p.product_name,
         SUM(f.total_revenue) AS revenue,
-        SUM(revenue) OVER () AS total_revenue
+        RANK() OVER (ORDER BY SUM(f.total_revenue) DESC) as product_rank
     FROM
         fact_sales AS f
     JOIN
@@ -79,9 +76,9 @@ WITH product_revenue AS (
     GROUP BY
         p.product_name
 )
+
 SELECT
-    SUM((revenue / total_revenue) * 100) AS percentage_contribution_from_top_10
+    SUM(CASE WHEN product_rank <= 10 THEN revenue ELSE 0 END) /.
+    SUM(revenue) * 100 AS percentage_contribution_from_top_10
 FROM
-    product_revenue
-QUALIFY
-    RANK() OVER (ORDER BY revenue DESC) <= 10;
+    product_revenue_ranked;
