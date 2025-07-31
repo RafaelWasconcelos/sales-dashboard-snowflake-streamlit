@@ -37,6 +37,7 @@ ORDER BY
 LIMIT 5;
 
 -- Query 3: YOY revenue growth by product category
+-- Query 3: YOY revenue growth by product category (CORRIGIDA)
 WITH yearly_category_revenue AS (
     SELECT
         p.category,
@@ -57,7 +58,8 @@ SELECT
     year,
     yearly_revenue,
     LAG(yearly_revenue, 1, 0) OVER (PARTITION BY category ORDER BY year) AS previous_year_revenue,
-    (yearly_revenue - previous_year_revenue) / previous_year_revenue AS yoy_growth_rate
+    -- A CORREÇÃO ESTÁ AQUI:
+    (yearly_revenue - previous_year_revenue) / NULLIF(previous_year_revenue, 0) AS yoy_growth_rate
 FROM
     yearly_category_revenue
 ORDER BY
