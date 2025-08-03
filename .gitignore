@@ -1,0 +1,15 @@
+# Ignore Python's auto-generated cache files
+__pycache__/
+*.pyc
+
+# Ignore virtual environment folders
+venv/
+*.venv/
+.env
+
+# Ignore sensitive configuration files
+.streamlit/secrets.toml
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
