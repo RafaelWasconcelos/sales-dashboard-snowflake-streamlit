@@ -2,8 +2,6 @@
 -- Step 1: Create Staging Tables for Raw Data
 -- =================================================================
 
--- These tables are temporary holding areas for the initial CSV data.
-
 CREATE OR REPLACE TABLE raw_products (
     product_id NUMBER,
     product_name VARCHAR,
@@ -21,16 +19,9 @@ CREATE OR REPLACE TABLE raw_sales (
     unit_price NUMBER(10, 2)
 );
 
--- NOTE: At this point, the user should manually load the CSV data
--- into the above tables using the Snowflake UI.
-
 -- =================================================================
 -- Step 2: Build the Star Schema (Dimension and Fact Tables)
 -- =================================================================
-
---
--- DIMENSION TABLES
---
 
 USE DATABASE MY_DB;
 USE SCHEMA PUBLIC;
