@@ -89,8 +89,20 @@ selected_date_range = st.sidebar.date_input(
 )
 
 # Convert the selected date range tuple into start and end dates
-start_date = pd.to_datetime(selected_date_range[0])
-end_date = pd.to_datetime(selected_date_range[1])
+# Convert the selected date range tuple into start and end dates
+if not selected_date_range or (isinstance(selected_date_range, tuple) and len(selected_date_range) == 0):
+    st.warning("Please select at least one date for filtering.")
+    st.stop()
+elif isinstance(selected_date_range, tuple):
+    if len(selected_date_range) == 2:
+        start_date = pd.to_datetime(selected_date_range[0])
+        end_date = pd.to_datetime(selected_date_range[1])
+    elif len(selected_date_range) == 1:
+        start_date = pd.to_datetime(selected_date_range[0])
+        end_date = pd.to_datetime(selected_date_range[0])
+else:
+    start_date = pd.to_datetime(selected_date_range)
+    end_date = pd.to_datetime(selected_date_range)
 
 # --- Applying Filters ---
 filtered_df = main_df[
