@@ -2,6 +2,8 @@
 
 A mini sales dashboard built with Snowflake and Streamlit. This project demonstrates data modeling, efficient SQL querying, and building an interactive front-end for data visualization.
 
+**[Access the live dashboard here](https://sales-dashboard-app-snow-test.streamlit.app/)**
+
 ---
 
 ### Key Features
